@@ -48,27 +48,16 @@ app.get('/', (req, res) => {
 //     });
 //   });
 
+// import services
+const ethService = require('./eth/index');
+const binanceService = require('./binance/index');
+const tetherService = require('./tether/index');
 
+app.use('/eth', ethService);
+app.use('/bnb', binanceService);
+app.use('/tether', tetherService);
 
-// https.get('https://api.etherscan.io/api?module=account&action=txlist&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=M9NEKJ4U8YKCCWPB69XJISVNYQPDSPBVIP', (resp) => {
-//   let data = '';
-
-//   // A chunk of data has been received.
-//   resp.on('data', (chunk) => {
-//     data += chunk;
-//   });
-
-//   // The whole response has been received. Print out the result.
-//   resp.on('end', () => {
-//     console.log(JSON.parse(data).explanation);
-//   });
-
-// }).on("error", (err) => {
-//   console.log("Error: " + err.message);
-// });
-
-// app.use('/logs', logsFromEtherscan);
-
+// start app
 app.listen(3000, (error) => {
     if (error) {
         console.log(error);
