@@ -1,3 +1,4 @@
+const { status } = require('express/lib/response');
 const https = require('https');
 
 module.exports = {
@@ -23,11 +24,28 @@ module.exports = {
                     const jsonData = JSON.parse(data);
                     // 10^-18
                     const balance = jsonData.result * Math.pow(10, -18);
+
+                    // calculate score
+                    let score = 0;
+                    if (jsonData.status == 0) {
+                        score = 0;
+                    } else if (balance < 50) {
+                        score += balance;
+                    } else {
+                        score = 50;
+                    }
+
+                    // result object
+                    let result = {
+                        balance: balance,
+                        score: parseFloat(score.toFixed(2))
+                    };
+
                     // console.log(balance);
                     const response = {
-                        status: 1,
-                        message: "OK",
-                        result: balance
+                        status: jsonData.status,
+                        message: jsonData.message,
+                        result: result
                     }
                     res.send(response).status(200);
                 });
